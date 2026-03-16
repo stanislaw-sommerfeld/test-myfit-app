@@ -2847,6 +2847,271 @@ function saveWeight(){
 
 function drawMuscleCharts(){}
 
+function renderNutrition(){
+  const todayNut=Storage.getTodayNutrition()||{date:new Date().toISOString(),meals:[
+    {name:'Petit-déjeuner',emoji:'🌅',items:[]},
+    {name:'Déjeuner',emoji:'☀️',items:[]},
+    {name:'Collation',emoji:'🍌',items:[]},
+    {name:'Dîner',emoji:'🌙',items:[]},
+    {name:'Après séance',emoji:'💪',items:[]}
+  ]};
+  nutritionState=JSON.parse(JSON.stringify(todayNut));
+  const goals=Storage.getNutritionGoals();
+
+  // Compute totals
+  const totals=computeNutTotals(nutritionState.meals);
+
+  document.getElementById('page-nutrition').innerHTML=`
+  <div class="page-header"><div class="page-title">NUTRITION</div>
+  <div class="page-sub">${new Date().toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}</div></div>
+  <div class="px">
+
+  <!-- Macro summary -->
+  <div class="card fade-up">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <span style="font-size:13px;font-weight:500">Macros du jour</span>
+      <span style="font-size:11px;color:var(--accent);font-weight:600">${Math.round(totals.kcal)} / ${goals.kcal} kcal</span>
+    </div>
+    <div class="prog-bg" style="margin-bottom:10px"><div class="prog-fill" style="width:${Math.min(100,Math.round(totals.kcal/goals.kcal*100))}%"></div></div>
+    <div class="stats-row stats-3">
+      <div class="stat-box" style="text-align:center">
+        <div style="font-size:16px;font-weight:600;color:#378ADD">${Math.round(totals.protein)}g</div>
+        <div class="stat-lbl">Protéines/${goals.protein}g</div>
+        <div class="prog-bg" style="margin-top:3px"><div class="prog-fill prog-fill-blue" style="width:${Math.min(100,Math.round(totals.protein/goals.protein*100))}%"></div></div>
+      </div>
+      <div class="stat-box" style="text-align:center">
+        <div style="font-size:16px;font-weight:600;color:var(--gold)">${Math.round(totals.carbs)}g</div>
+        <div class="stat-lbl">Glucides/${goals.carbs}g</div>
+        <div class="prog-bg" style="margin-top:3px"><div class="prog-fill prog-fill-gold" style="width:${Math.min(100,Math.round(totals.carbs/goals.carbs*100))}%"></div></div>
+      </div>
+      <div class="stat-box" style="text-align:center">
+        <div style="font-size:16px;font-weight:600;color:var(--red)">${Math.round(totals.fat)}g</div>
+        <div class="stat-lbl">Lipides/${goals.fat}g</div>
+        <div class="prog-bg" style="margin-top:3px"><div class="prog-fill" style="width:${Math.min(100,Math.round(totals.fat/goals.fat*100))}%;background:var(--red)"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scanner -->
+  <button class="btn btn-outline btn-full fade-up" style="margin-bottom:10px;animation-delay:.04s" onclick="openScanner()">
+    📸 Scanner un code-barres (Open Food Facts)
+  </button>
+
+  <!-- Meals -->
+  <div id="meals-container"></div>
+
+  <!-- Add free note -->
+  <div class="card fade-up" style="animation-delay:.1s">
+    <div class="input-label" style="margin-bottom:6px">Note libre nutrition</div>
+    <textarea class="input input-sm" rows="2" id="nut-note" placeholder="Ex: J'ai bien mangé mes protéines, manque de légumes..." style="resize:none;margin-bottom:8px"></textarea>
+    <button class="btn btn-outline btn-full btn-sm" onclick="saveNutritionNote()">Enregistrer la note</button>
+  </div>
+
+  </div>`;
+
+  renderMeals();
+}
+
+function computeNutTotals(meals){
+  let kcal=0,protein=0,carbs=0,fat=0;
+  for(const meal of meals){for(const item of meal.items){
+    const q=(item.qty||100)/100;
+    kcal+=(item.kcal||0)*q;protein+=(item.p||0)*q;carbs+=(item.c||0)*q;fat+=(item.f||0)*q;
+  }}
+  return{kcal,protein,carbs,fat};
+}
+
+function renderMeals(){
+  const c=document.getElementById('meals-container');if(!c)return;
+  c.innerHTML=nutritionState.meals.map((meal,mi)=>`
+  <div class="card fade-up" style="animation-delay:${.05+mi*.03}s">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="font-size:20px">${meal.emoji}</span>
+        <span style="font-size:14px;font-weight:500">${meal.name}</span>
+        <span style="font-size:11px;color:var(--text3)">${Math.round(meal.items.reduce((a,i)=>a+(i.kcal||0)*(i.qty||100)/100,0))} kcal</span>
+      </div>
+      <button class="btn btn-xs btn-outline" onclick="showAddFoodSheet(${mi})">+ Aliment</button>
+    </div>
+    ${meal.items.length?meal.items.map((item,ii)=>`
+    <div class="food-log-item">
+      <div class="food-icon">${item.emoji||'🍽️'}</div>
+      <div style="flex:1">
+        <div class="food-name">${item.name}</div>
+        <div class="food-sub">${item.qty||100}${item.unit||'g'} · P:${Math.round((item.p||0)*(item.qty||100)/100)}g G:${Math.round((item.c||0)*(item.qty||100)/100)}g L:${Math.round((item.f||0)*(item.qty||100)/100)}g</div>
+      </div>
+      <div style="text-align:right">
+        <div class="food-kcal">${Math.round((item.kcal||0)*(item.qty||100)/100)}</div>
+        <div style="font-size:9px;color:var(--text3)">kcal</div>
+      </div>
+      <button class="btn btn-ghost btn-xs" onclick="removeFoodItem(${mi},${ii})" style="color:var(--red);margin-left:4px">✕</button>
+    </div>`).join(''):`<div style="font-size:12px;color:var(--text3);padding:6px 0">Aucun aliment · Appuie sur + pour ajouter</div>`}
+  </div>`).join('');
+}
+
+let scannerMealIdx=0;
+function showAddFoodSheet(mi){
+  scannerMealIdx=mi;
+  const content=document.getElementById('food-sheet-content');
+  content.innerHTML=`
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Ajouter un aliment</div>
+    <div class="sheet-sub">${nutritionState.meals[mi].name}</div>
+
+    <!-- Search -->
+    <div style="margin-bottom:10px">
+      <div class="input-label">Recherche (Open Food Facts)</div>
+      <div style="display:flex;gap:8px">
+        <input class="input" id="food-search" placeholder="Ex: riz basmati, yaourt grec..." oninput="searchFoodDebounce()">
+        <button class="btn btn-outline btn-sm" onclick="openScanner()">📸</button>
+      </div>
+      <div id="food-results" style="margin-top:8px"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Manual entry -->
+    <div style="margin-top:10px">
+      <div style="font-size:12px;font-weight:500;margin-bottom:8px">Saisie manuelle</div>
+      <input class="input input-sm" id="food-name-manual" placeholder="Nom de l'aliment" style="margin-bottom:6px">
+      <div class="input-grid-3" style="margin-bottom:6px">
+        <div><div class="input-label">kcal/100g</div><input class="input input-sm" id="food-kcal" type="number" placeholder="100"></div>
+        <div><div class="input-label">Protéines g</div><input class="input input-sm" id="food-prot" type="number" placeholder="10"></div>
+        <div><div class="input-label">Glucides g</div><input class="input input-sm" id="food-carb" type="number" placeholder="20"></div>
+      </div>
+      <div class="input-grid-2" style="margin-bottom:8px">
+        <div><div class="input-label">Lipides g</div><input class="input input-sm" id="food-fat" type="number" placeholder="5"></div>
+        <div><div class="input-label">Quantité (g/ml)</div><input class="input input-sm" id="food-qty" type="number" placeholder="100"></div>
+      </div>
+      <button class="btn btn-primary btn-full btn-sm" onclick="addFoodManual(${mi})">Ajouter</button>
+    </div>
+
+    <!-- Quick foods -->
+    <div style="margin-top:12px">
+      <div class="input-label" style="margin-bottom:6px">Aliments recommandés (programme)</div>
+      <div id="quick-foods"></div>
+    </div>
+
+    <button class="btn btn-outline btn-full btn-sm" style="margin-top:10px" onclick="closeSheet('food-sheet')">Fermer</button>
+  `;
+  document.getElementById('food-sheet').classList.add('open');
+  renderQuickFoods(mi);
+}
+
+const QUICK_FOODS=[
+  {name:'Œuf entier',emoji:'🥚',kcal:155,p:13,c:1.1,f:11,unit:'unité',qty:60},
+  {name:'Saumon cuit',emoji:'🐟',kcal:182,p:25,c:0,f:8.1,unit:'g',qty:120},
+  {name:'Poulet (blanc)',emoji:'🍗',kcal:165,p:31,c:0,f:3.6,unit:'g',qty:150},
+  {name:'Riz cuit',emoji:'🍚',kcal:130,p:2.7,c:28,f:0.3,unit:'g',qty:200},
+  {name:'Patate douce',emoji:'🍠',kcal:86,p:1.6,c:20,f:0.1,unit:'g',qty:150},
+  {name:'Skyr nature',emoji:'🥛',kcal:63,p:11,c:4,f:0.2,unit:'g',qty:170},
+  {name:'Yaourt grec 0%',emoji:'🫙',kcal:59,p:10,c:3.6,f:0.4,unit:'g',qty:170},
+  {name:'Banane',emoji:'🍌',kcal:89,p:1.1,c:23,f:0.3,unit:'g',qty:120},
+  {name:'Flocons d\'avoine',emoji:'🌾',kcal:389,p:17,c:66,f:7,unit:'g',qty:80},
+  {name:'Pain complet',emoji:'🍞',kcal:247,p:8.5,c:41,f:3.5,unit:'g',qty:60},
+  {name:'Amandes',emoji:'🌰',kcal:579,p:21,c:22,f:50,unit:'g',qty:30},
+  {name:'Avocat',emoji:'🥑',kcal:160,p:2,c:9,f:15,unit:'g',qty:100},
+];
+
+function renderQuickFoods(mi){
+  const c=document.getElementById('quick-foods');if(!c)return;
+  c.innerHTML=QUICK_FOODS.map(f=>`<div class="food-log-item card-interactive" style="cursor:pointer" onclick="addQuickFood(${mi},${JSON.stringify(f).replace(/"/g,"'")})">
+    <div class="food-icon">${f.emoji}</div>
+    <div style="flex:1"><div class="food-name">${f.name}</div>
+    <div class="food-sub">${f.qty}${f.unit} · ${Math.round(f.kcal*f.qty/100)}kcal · P:${Math.round(f.p*f.qty/100)}g</div></div>
+    <button class="btn btn-xs btn-outline">+</button>
+  </div>`).join('');
+}
+
+function addQuickFood(mi,fStr){
+  const f=typeof fStr==='string'?JSON.parse(fStr.replace(/'/g,'"')):fStr;
+  nutritionState.meals[mi].items.push({...f});
+  Storage.saveTodayNutrition(nutritionState);
+  closeSheet('food-sheet');
+  renderNutrition();
+  toast(`${f.name} ajouté ✓`,'success');
+}
+
+let foodSearchTimer=null;
+function searchFoodDebounce(){
+  clearTimeout(foodSearchTimer);
+  foodSearchTimer=setTimeout(()=>searchFood(),500);
+}
+
+async function searchFood(){
+  const q=document.getElementById('food-search')?.value?.trim();
+  if(!q||q.length<3)return;
+  const res=document.getElementById('food-results');
+  if(res)res.innerHTML=`<div style="font-size:12px;color:var(--text3)">Recherche...</div>`;
+  try{
+    const r=await fetch(`https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(q)}&search_simple=1&action=process&json=1&page_size=5&fields=product_name,nutriments,image_small_url,brands`);
+    const data=await r.json();
+    const products=(data.products||[]).filter(p=>p.product_name&&p.nutriments?.['energy-kcal_100g']);
+    if(!products.length){if(res)res.innerHTML=`<div style="font-size:12px;color:var(--text3)">Aucun résultat</div>`;return;}
+    if(res)res.innerHTML=products.map(p=>{
+      const kcal=Math.round(p.nutriments['energy-kcal_100g']||0);
+      const prot=+(p.nutriments['proteins_100g']||0).toFixed(1);
+      const carb=+(p.nutriments['carbohydrates_100g']||0).toFixed(1);
+      const fat=+(p.nutriments['fat_100g']||0).toFixed(1);
+      const name=(p.product_name||'').slice(0,40);
+      return`<div class="food-log-item card-interactive" style="cursor:pointer" onclick="addSearchedFood(${scannerMealIdx},'${name.replace(/'/g,"\\'")}',${kcal},${prot},${carb},${fat})">
+        <div class="food-icon">🔍</div>
+        <div style="flex:1"><div class="food-name">${name}</div>
+        <div class="food-sub">P:${prot}g G:${carb}g L:${fat}g / 100g</div></div>
+        <div style="text-align:right"><div class="food-kcal">${kcal}</div><div style="font-size:9px;color:var(--text3)">kcal/100g</div></div>
+      </div>`;
+    }).join('');
+  }catch(e){if(res)res.innerHTML=`<div style="font-size:12px;color:var(--red)">Erreur réseau</div>`;}
+}
+
+function addSearchedFood(mi,name,kcal,p,c,f){
+  nutritionState.meals[mi].items.push({name,emoji:'🔍',kcal,p,c,f,qty:100,unit:'g'});
+  Storage.saveTodayNutrition(nutritionState);
+  closeSheet('food-sheet');renderNutrition();
+  toast(`${name.slice(0,20)} ajouté ✓`,'success');
+}
+
+function addFoodManual(mi){
+  const name=document.getElementById('food-name-manual')?.value?.trim();
+  const kcal=parseFloat(document.getElementById('food-kcal')?.value)||0;
+  const p=parseFloat(document.getElementById('food-prot')?.value)||0;
+  const c=parseFloat(document.getElementById('food-carb')?.value)||0;
+  const f=parseFloat(document.getElementById('food-fat')?.value)||0;
+  const qty=parseFloat(document.getElementById('food-qty')?.value)||100;
+  if(!name){toast('Nom requis','error');return;}
+  nutritionState.meals[mi].items.push({name,emoji:'🍽️',kcal,p,c,f,qty,unit:'g'});
+  Storage.saveTodayNutrition(nutritionState);
+  closeSheet('food-sheet');renderNutrition();
+  toast(`${name} ajouté ✓`,'success');
+}
+
+function removeFoodItem(mi,ii){
+  nutritionState.meals[mi].items.splice(ii,1);
+  Storage.saveTodayNutrition(nutritionState);renderNutrition();
+}
+
+function saveNutritionNote(){
+  const note=document.getElementById('nut-note')?.value?.trim();
+  if(!note)return;
+  Storage.addGlobalMemo(`[Nutrition] ${note}`);
+  toast('Note enregistrée ✓','success');
+  document.getElementById('nut-note').value='';
+}
+
+function openScanner(){
+  // Open file input to capture barcode via camera
+  let inp=document.getElementById('barcode-input');
+  if(!inp){inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.capture='environment';inp.id='barcode-input';inp.style.display='none';
+    inp.onchange=async(e)=>{
+      const file=e.target.files[0];if(!file)return;
+      toast('Scan en cours...','info',3000);
+      // Use Open Food Facts barcode image lookup — simplified: just open search
+      toast('Utilise la recherche texte pour l\'instant','info',3000);
+    };
+    document.body.appendChild(inp);}
+  inp.click();
+}
+
 // ===== POSTURE PAGE =====
 function renderPosture(){
   document.getElementById('page-posture').innerHTML=`
