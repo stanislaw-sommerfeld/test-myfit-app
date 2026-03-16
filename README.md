@@ -1,6 +1,6 @@
 # 🏉 Rugby Performance App
 
-Application web progressive (PWA) — suivi d'entraînement rugby avec prédictions IA.
+Application web progressive (PWA) — suivi d'entraînement rugby avec prédictions IA. \\
 Lien : https://stanislaw-sommerfeld.github.io/test-myfit-app/
 
 ## Fonctionnalités
