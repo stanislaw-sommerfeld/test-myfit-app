@@ -47,7 +47,7 @@ input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
   width:100%;max-width:430px;height:calc(var(--nav-h) + var(--safe-bottom));
   background:rgba(8,8,10,0.88);backdrop-filter:blur(28px) saturate(1.8);
   border-top:.5px solid var(--border2);
-  display:grid;grid-template-columns:repeat(6,1fr);
+  display:grid;grid-template-columns:repeat(7,1fr);
   padding-bottom:var(--safe-bottom);z-index:100
 }
 .nav-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 2px 8px;cursor:pointer;gap:4px;border:none;background:transparent;color:var(--text3);transition:color .18s;position:relative}
@@ -294,6 +294,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="5" r="2"/><path d="M12 7v6M9 10h6M9 22l3-5 3 5"/></svg>
       <span class="nav-label">Posture</span>
     </button>
+    <button class="nav-item" data-page="home-workouts" onclick="nav('home-workouts')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>
+      <span class="nav-label">Appart</span>
+    </button>
     <button class="nav-item" data-page="profile" onclick="nav('profile')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
       <span class="nav-label">Profil</span>
@@ -312,6 +316,10 @@ input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;heigh
   </div>
 </div>
 
+  <!-- HOME SESSION SHEET -->
+  <div class="sheet-overlay" id="home-sess-sheet" onclick="if(event.target===this)closeSheet('home-sess-sheet')">
+    <div class="sheet" id="home-sess-content"></div>
+  </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
 const EXERCISES = {
@@ -600,6 +608,110 @@ const POSTURE_ROUTINE = [
 ];
 
 if (typeof module !== 'undefined') module.exports = { EXERCISES, WEEKLY_PROGRAM, POSTURE_ROUTINE };
+
+
+// ===== PERIODIZATION BLOCKS =====
+const PERIO_BLOCKS = [
+  {id:"hypertrophy",name:"Bloc 1 — Hypertrophie",weeks:5,color:"#0fba82",
+   reps:"8-12",sets:"3-4",rest:90,
+   desc:"Volume élevé, tempo lent. Construire la base musculaire indispensable.",
+   swaps:{"squat-barre":["Bulgarian split squat","Hack squat BW","Leg press BW"],"bench-press":["Dips lestés","Push-up lesté","Floor press"],"tractions":["Rowing BW","Lat pulldown bande","Inverted row"],"rdl":["Hip thrust","Good morning BW","Nordic curl"]}},
+  {id:"strength",name:"Bloc 2 — Force",weeks:4,color:"#4d9ef5",
+   reps:"4-6",sets:"4-5",rest:180,
+   desc:"Charges lourdes sur les mouvements de base. Développer la force maximale et le 1RM.",
+   swaps:{"squat-barre":["Front squat","Squat pause","Zercher squat BW"],"bench-press":["Close grip bench","Incline bench","Board press"],"tractions":["Weighted pull-up","Archer pull-up","Typewriter pull-up"],"deadlift":["Sumo deadlift","Romanian deadlift","Deficit deadlift"]}},
+  {id:"power",name:"Bloc 3 — Puissance",weeks:4,color:"#f0a030",
+   reps:"3-5",sets:"4",rest:180,
+   desc:"Explosivité, vitesse d'exécution. Le plus spécifique pour le rugby.",
+   swaps:{"squat-barre":["Jump squat lesté","Box squat explosif","Broad jump"],"bench-press":["Push press","Speed bench","Medicine ball push"],"tractions":["Explosive pull-up","Muscle-up","Kipping pull-up"],"deadlift":["Hang clean","Power snatch","Speed deadlift"]}},
+  {id:"deload",name:"Deload",weeks:1,color:"#9d8df5",
+   reps:"10-12",sets:"2-3",rest:60,
+   desc:"Récupération active. Charges -40%, mêmes mouvements. Obligatoire toutes les 4-6 semaines.",
+   swaps:{}}
+];
+
+// ===== HOME SESSIONS =====
+const HOME_SESSIONS = [
+  {id:"activation",emoji:"☀️",name:"Activation matin",dur:"15-20 min",
+   timing:"1h30+ avant rugby",intensity:"légère",color:"#f0a030",
+   why:"Réveiller le SNC, mobiliser hanches et chevilles, préparer les patterns rugby.",
+   avoid:"Moins d'1h avant le rugby",
+   exos:[
+     {n:"Jumping jacks",s:"3",r:"20",rest:"20s",m:"Corps entier",note:"Monte la température"},
+     {n:"Hip circles debout",s:"2",r:"10/côté",rest:"10s",m:"Hanches",note:"Rotation ample"},
+     {n:"Squat profond BW",s:"3",r:"15",rest:"20s",m:"Quad, Fessiers",note:"Lent, teste mobilité"},
+     {n:"Fentes marchées",s:"2",r:"10/jambe",rest:"20s",m:"Quad, Hip flexors",note:"Torse droit"},
+     {n:"Squat sauté",s:"3",r:"6",rest:"45s",m:"Chaîne entière",note:"Atterrissage silencieux"},
+     {n:"Leg swings",s:"2",r:"10/côté",rest:"10s",m:"Ischios, Hanches",note:"Avant-arrière + latéral"},
+     {n:"Inchworm",s:"3",r:"6",rest:"20s",m:"Core, épaules, ischios",note:"Mains au sol, marcher vers l'avant"}
+   ]},
+  {id:"escalier",emoji:"⚡",name:"Escalier vitesse",dur:"20-25 min",
+   timing:"Matin weekend, 3h+ avant salle",intensity:"modérée-élevée",color:"#0fba82",
+   why:"Accélération 0-10m, fréquence de pas, transfert direct sprint rugby.",
+   avoid:"Veille de match ou jour salle lourde",
+   exos:[
+     {n:"Sprint escalier",s:"8",r:"1 montée",rest:"60s",m:"Quad, Fessiers, Mollets",note:"Max, descente marche"},
+     {n:"Bondissements 2 marches",s:"5",r:"5 montées",rest:"90s",m:"Explosivité",note:"Pieds joints, 2 marches à la fois"},
+     {n:"Montées latérales croisées",s:"3",r:"3 A/R",rest:"60s",m:"Adducteurs, coordination",note:"Pieds croisés latéralement"},
+     {n:"Step-up explosif alterné",s:"4",r:"8/jambe",rest:"60s",m:"Fessiers, Quad",note:"Un pied sur marche, alterner"},
+     {n:"Descente excentrique 1 jambe",s:"3",r:"1 descente/jambe",rest:"60s",m:"Quad excentrique",note:"3s par marche"},
+     {n:"Endurance escalier",s:"3",r:"10 montées",rest:"2min",m:"Cardio, corps entier",note:"Rythme soutenu, pas max"}
+   ]},
+  {id:"renfo-soir",emoji:"🌙",name:"Renfo léger soir",dur:"20-25 min",
+   timing:"Soir après rugby — si fatigue < 7/10",intensity:"légère",color:"#9d8df5",
+   why:"Renforcement sans charge, core, cou. Ne fatigue pas pour le lendemain.",
+   avoid:"Si RPE rugby > 8 ou fatigue > 7",
+   exos:[
+     {n:"Planche avant",s:"3",r:"45-60s",rest:"30s",m:"Core",note:"Corps rigide, fessiers contractés"},
+     {n:"Planche latérale",s:"3",r:"30s/côté",rest:"30s",m:"Obliques",note:"Hanches hautes"},
+     {n:"Pompes lentes (3s descente)",s:"3",r:"8-10",rest:"45s",m:"Pecs, Triceps, Core",note:"Tempo 3-1-2"},
+     {n:"Superman",s:"3",r:"12",rest:"30s",m:"Lombaires, Fessiers",note:"Lever bras et jambes opposés, tenir 2s"},
+     {n:"Résistance manuelle cou",s:"3",r:"10/direction",rest:"20s",m:"Cou complet",note:"3 directions, essentiel rugby"},
+     {n:"Hip flexor stretch",s:"2",r:"45s/côté",rest:"15s",m:"Psoas, Hip flexors",note:"Fente basse, bassin vers l'avant"}
+   ]},
+  {id:"complement",emoji:"💪",name:"Complément salle",dur:"30-35 min",
+   timing:"Matin weekend — indépendant salle",intensity:"modérée-élevée",color:"#4d9ef5",
+   why:"Exercices BW avancés : pistol squat, dips, nordic curl, pompes déclinées.",
+   avoid:"Même jour qu'une séance salle lourde",
+   exos:[
+     {n:"Pistol squat",s:"4",r:"5/jambe",rest:"90s",m:"Quad, Fessiers, Équilibre",note:"Avec appui si besoin au début"},
+     {n:"Pompes déclinées",s:"3",r:"12",rest:"60s",m:"Pecs hauts, Épaules",note:"Pieds sur chaise ou marche"},
+     {n:"Dips sur rebord",s:"3",r:"12",rest:"60s",m:"Triceps, Pecs bas",note:"Descendre les hanches"},
+     {n:"Nordic curl assisté",s:"3",r:"5-8",rest:"90s",m:"Ischios",note:"Pieds sous meuble. Descente 6s."},
+     {n:"Mountain climbers",s:"4",r:"30s",rest:"30s",m:"Core, Cardio",note:"Cadence élevée"},
+     {n:"Archer push-up",s:"3",r:"6/côté",rest:"60s",m:"Pecs unilatéral",note:"Un bras étiré sur le côté"},
+     {n:"L-sit tuck",s:"3",r:"20s",rest:"45s",m:"Core, Triceps",note:"Sur 2 chaises, genoux relevés"}
+   ]}
+];
+
+// ===== PERIODIZATION ENGINE =====
+const Perio = {
+  getBlock() {
+    const s = Storage.get();
+    const start = new Date(s.profile.startDate || new Date());
+    const wk = Math.floor((Date.now() - start) / (7*86400000));
+    const cycle = PERIO_BLOCKS.reduce((a,b)=>a+b.weeks,0);
+    const pos = wk % cycle;
+    let acc = 0;
+    for (const b of PERIO_BLOCKS) {
+      acc += b.weeks;
+      if (pos < acc) return {block:b, weeksIn:pos-(acc-b.weeks), weeksLeft:acc-pos};
+    }
+    return {block:PERIO_BLOCKS[0], weeksIn:0, weeksLeft:5};
+  },
+  stagnating(exId) {
+    const hist = Storage.getExHistory(exId);
+    if (hist.length < 3) return false;
+    const last3 = hist.slice(-3).map(h => bestSet1RM(h.sets));
+    return last3[2] <= last3[0];
+  },
+  shouldChange() {
+    const {weeksLeft} = this.getBlock();
+    const stag = Object.keys(EXERCISES).filter(id => this.stagnating(id)).length;
+    return weeksLeft <= 1 || stag >= 3;
+  }
+};
+
 
 const Storage = {
   VERSION:'3.0', KEY:'rugby_v3',
@@ -1438,6 +1550,194 @@ const AnimController = {
   }
 };
 
+
+// ===== POSTURE ANIMATIONS =====
+const PA = {
+  "chin-tuck": {
+    phases:["Position neutre","Rentrer le menton","Tenir 10s","Relâcher"],
+    cues:["Ne PAS lever la tête","Double menton = correct","Mouvement horizontal seulement","Cou allongé vers l'arrière"],
+    render(c,t){
+      const ph=t<.2?0:t<.45?1:t<.75?2:3;
+      const fwd=t<.2?18:t<.45?18*(1-(t-.2)/.25):t<.75?0:18*((t-.75)/.25);
+      const ok=fwd<3;
+      const hx=150+fwd,hy=90;
+      c.innerHTML=`<svg viewBox="0 0 300 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:280px">
+        <rect x="40" y="206" width="220" height="10" rx="5" fill="rgba(255,255,255,0.06)"/>
+        <rect x="58" y="185" width="144" height="24" rx="6" fill="none" stroke="#f0f0f2" stroke-width="1.5"/>
+        <circle cx="${hx}" cy="${hy}" r="22" fill="none" stroke="#f0f0f2" stroke-width="2"/>
+        <line x1="${150+fwd*.3}" y1="${hy+22}" x2="150" y2="185" stroke="#f0f0f2" stroke-width="2" stroke-linecap="round"/>
+        ${ok?`<circle cx="${hx}" cy="${hy}" r="5" fill="#0fba82"><animate attributeName="r" values="5;9;5" dur=".8s" repeatCount="indefinite"/></circle><text x="80" y="${hy-32}" font-size="10" font-family="system-ui" fill="#0fba82">✓ Correct</text>`:`<text x="${hx+5}" y="${hy+42}" font-size="10" font-family="system-ui" fill="rgba(240,80,80,.8)">Trop en avant</text>`}
+        <rect x="8" y="8" width="${this.phases[ph].length*7+16}" height="20" rx="4" fill="rgba(15,186,130,.18)"/>
+        <text x="16" y="21" font-size="11" font-weight="600" font-family="system-ui" fill="#0fba82">${this.phases[ph]}</text>
+        <rect x="8" y="284" width="284" height="22" rx="5" fill="rgba(15,186,130,.1)" stroke="rgba(15,186,130,.3)" stroke-width=".5"/>
+        <text x="16" y="298" font-size="11" font-family="system-ui" fill="#5DCAA5">${this.cues[ph]}</text>
+      </svg>`;
+    }
+  },
+  "wall-angel":{
+    phases:["Bras en bas","Monter lentement","Bras en haut","Descendre"],
+    cues:["Tout au mur — nuque, dos, bras","Si les bras décollent = mobilité insuffisante","Omoplate vers le bas","Mouvement lent et contrôlé"],
+    render(c,t){
+      const ph=t<.2?0:t<.5?1:t<.65?2:3;
+      const a=t<.2?0:t<.5?((t-.2)/.3)*100:t<.65?100:100-((t-.65)/.35)*100;
+      const col=a>70?"#0fba82":a>40?"#f0a030":"#f0f0f2";
+      const ey=120-a*.4,hy=120-a*.8,ex=50+a*.3,hx=40+a*.4;
+      c.innerHTML=`<svg viewBox="0 0 300 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:280px">
+        <rect x="248" y="20" width="14" height="250" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.14)" stroke-width=".5"/>
+        <rect x="206" y="108" width="42" height="82" rx="8" fill="none" stroke="#f0f0f2" stroke-width="1.5"/>
+        <circle cx="227" cy="88" r="18" fill="none" stroke="#f0f0f2" stroke-width="2"/>
+        <line x1="206" y1="123" x2="${300-ex}" y2="${ey}" stroke="${col}" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="${300-ex}" y1="${ey}" x2="${300-hx}" y2="${hy}" stroke="${col}" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="206" y1="123" x2="${ex}" y2="${ey}" stroke="${col}" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="${ex}" y1="${ey}" x2="${hx}" y2="${hy}" stroke="${col}" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="262" cy="88" r="5" fill="${col}" opacity=".8"/>
+        <circle cx="262" cy="123" r="5" fill="${col}" opacity=".8"/>
+        <circle cx="262" cy="${hy}" r="5" fill="${a>20?col:"rgba(255,255,255,.2)"}" opacity=".8"/>
+        ${a>80?`<text x="30" y="270" font-size="10" font-family="system-ui" fill="#0fba82">✓ Contact mur maintenu</text>`:""}
+        <rect x="8" y="8" width="${this.phases[ph].length*7+16}" height="20" rx="4" fill="rgba(15,186,130,.18)"/>
+        <text x="16" y="21" font-size="11" font-weight="600" font-family="system-ui" fill="#0fba82">${this.phases[ph]}</text>
+        <rect x="8" y="284" width="284" height="22" rx="5" fill="rgba(15,186,130,.1)" stroke="rgba(15,186,130,.3)" stroke-width=".5"/>
+        <text x="16" y="298" font-size="11" font-family="system-ui" fill="#5DCAA5">${this.cues[ph]}</text>
+      </svg>`;
+    }
+  },
+  "scap-retract":{
+    phases:["Neutre","Pincer","Tenir 5s","Relâcher"],
+    cues:["Épaules BASSES — ne pas hausser","Comme tenir un crayon entre omoplates","Poitrine légèrement sortie","Relâcher lentement"],
+    render(c,t){
+      const ph=t<.15?0:t<.4?1:t<.7?2:3;
+      const r=t<.15?0:t<.4?(t-.15)/.25:t<.7?1:1-(t-.7)/.3;
+      const cx=150,ty=80,tb=182,sw=50+r*8;
+      const col=r>.5?"#0fba82":"rgba(255,255,255,.25)";
+      c.innerHTML=`<svg viewBox="0 0 300 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:280px">
+        <text x="20" y="55" font-size="10" font-family="system-ui" fill="rgba(255,255,255,.3)">Vue de dos</text>
+        <ellipse cx="${cx}" cy="${(ty+tb)/2}" rx="45" ry="${(tb-ty)/2}" fill="none" stroke="#f0f0f2" stroke-width="1.5"/>
+        <circle cx="${cx}" cy="${ty-22}" r="18" fill="none" stroke="#f0f0f2" stroke-width="2"/>
+        <line x1="${cx}" y1="${ty}" x2="${cx}" y2="${tb}" stroke="rgba(255,255,255,.12)" stroke-width="1" stroke-dasharray="4,3"/>
+        <ellipse cx="${cx-sw*.5}" cy="${ty+44}" rx="${12+r*5}" ry="${18+r*3}" fill="${r>.5?"rgba(15,186,130,.18)":"rgba(255,255,255,.05)"}" stroke="${col}" stroke-width="${r>.5?1.5:1}"/>
+        <ellipse cx="${cx+sw*.5}" cy="${ty+44}" rx="${12+r*5}" ry="${18+r*3}" fill="${r>.5?"rgba(15,186,130,.18)":"rgba(255,255,255,.05)"}" stroke="${col}" stroke-width="${r>.5?1.5:1}"/>
+        ${r>.8?`<text x="${cx-22}" y="${ty+74}" font-size="11" font-weight="600" font-family="system-ui" fill="#0fba82">✓ Pincées</text>`:""}
+        <rect x="8" y="8" width="${this.phases[ph].length*7+16}" height="20" rx="4" fill="rgba(15,186,130,.18)"/>
+        <text x="16" y="21" font-size="11" font-weight="600" font-family="system-ui" fill="#0fba82">${this.phases[ph]}</text>
+        <rect x="8" y="284" width="284" height="22" rx="5" fill="rgba(15,186,130,.1)" stroke="rgba(15,186,130,.3)" stroke-width=".5"/>
+        <text x="16" y="298" font-size="11" font-family="system-ui" fill="#5DCAA5">${this.cues[ph]}</text>
+      </svg>`;
+    }
+  },
+  "scm-stretch":{
+    phases:["Neutre","Incliner la tête","Rotation du regard","Tenir 30s"],
+    cues:["Oreille vers épaule — pas lever épaule","Rotation du regard vers le plafond","Tension douce — jamais forcer","Changer de côté après 30s"],
+    render(c,t){
+      const ph=t<.2?0:t<.4?1:t<.65?2:3;
+      const tilt=t<.2?0:t<.4?((t-.2)/.2)*30:t<.65?30+((t-.4)/.25)*8:38;
+      const rad=tilt*Math.PI/180;
+      const sy=210,hx=150-Math.sin(rad)*32,hy=sy-94+Math.cos(rad)*8;
+      const str=tilt>25;
+      c.innerHTML=`<svg viewBox="0 0 300 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:280px">
+        <rect x="108" y="${sy}" width="84" height="68" rx="8" fill="none" stroke="#f0f0f2" stroke-width="1.5"/>
+        <line x1="88" y1="${sy+10}" x2="212" y2="${sy+10}" stroke="#f0f0f2" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="${150-Math.sin(rad)*9}" y1="${sy}" x2="${hx}" y2="${hy+22}" stroke="#f0f0f2" stroke-width="2" stroke-linecap="round"/>
+        <circle cx="${hx}" cy="${hy}" r="22" fill="none" stroke="#f0f0f2" stroke-width="2"/>
+        ${str?`<line x1="212" y1="${sy+8}" x2="${hx+10}" y2="${hy+18}" stroke="rgba(15,186,130,.7)" stroke-width="5" stroke-linecap="round"><animate attributeName="opacity" values=".5;1;.5" dur="1s" repeatCount="indefinite"/></line><text x="218" y="${sy-8}" font-size="10" font-family="system-ui" fill="#0fba82">SCM ✓</text>`:""}
+        <rect x="8" y="8" width="${this.phases[ph].length*7+16}" height="20" rx="4" fill="rgba(15,186,130,.18)"/>
+        <text x="16" y="21" font-size="11" font-weight="600" font-family="system-ui" fill="#0fba82">${this.phases[ph]}</text>
+        <rect x="8" y="284" width="284" height="22" rx="5" fill="rgba(15,186,130,.1)" stroke="rgba(15,186,130,.3)" stroke-width=".5"/>
+        <text x="16" y="298" font-size="11" font-family="system-ui" fill="#5DCAA5">${this.cues[ph]}</text>
+      </svg>`;
+    }
+  },
+  "pec-stretch":{
+    phases:["Position neutre","Appui chambranle","Rotation du corps","Tenir — sentir"],
+    cues:["Bras exactement à hauteur épaule","Tourner le corps, pas incliner","Tension dans le pectoral et épaule antérieure","Ne pas cambrer le dos"],
+    render(c,t){
+      const ph=t<.2?0:t<.4?1:t<.65?2:3;
+      const rot=t<.4?0:t<.65?((t-.4)/.25)*38:38;
+      const armUp=t<.2?0:t<.4?(t-.2)/.2:1;
+      const cx=140,by=155,dx=246;
+      const str=rot>20;
+      c.innerHTML=`<svg viewBox="0 0 300 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:280px">
+        <rect x="${dx}" y="28" width="14" height="234" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.15)" stroke-width=".5"/>
+        <g transform="rotate(${rot},${cx},${by+38})"><rect x="${cx-22}" y="${by}" width="44" height="76" rx="8" fill="none" stroke="#f0f0f2" stroke-width="1.5"/></g>
+        <circle cx="${cx+Math.sin(rot*Math.PI/180)*22}" cy="${by-28}" r="20" fill="none" stroke="#f0f0f2" stroke-width="2"/>
+        <line x1="${cx+20}" y1="${by+5}" x2="${dx}" y2="${by+5-armUp*6}" stroke="${str?"#0fba82":"#f0f0f2"}" stroke-width="2.5" stroke-linecap="round"/>
+        ${str?`<ellipse cx="${cx+42}" cy="${by+22}" rx="25" ry="15" fill="rgba(15,186,130,.16)" stroke="#0fba82" stroke-width="1"><animate attributeName="opacity" values=".5;1;.5" dur="1s" repeatCount="indefinite"/></ellipse><text x="28" y="${by-8}" font-size="10" font-family="system-ui" fill="#0fba82">Pectoral étiré ✓</text>`:""}
+        <rect x="8" y="8" width="${this.phases[ph].length*7+16}" height="20" rx="4" fill="rgba(15,186,130,.18)"/>
+        <text x="16" y="21" font-size="11" font-weight="600" font-family="system-ui" fill="#0fba82">${this.phases[ph]}</text>
+        <rect x="8" y="284" width="284" height="22" rx="5" fill="rgba(15,186,130,.1)" stroke="rgba(15,186,130,.3)" stroke-width=".5"/>
+        <text x="16" y="298" font-size="11" font-family="system-ui" fill="#5DCAA5">${this.cues[ph]}</text>
+      </svg>`;
+    }
+  },
+  "cat-cow":{
+    phases:["Neutre 4 pattes","CAT — dos rond","Transition","COW — dos creux"],
+    cues:["Mouvement initié par le bassin","CAT = expirer profondément","COW = inspirer profondément","4 secondes pour chaque position"],
+    render(c,t){
+      const ph=t<.15?0:t<.4?1:t<.6?2:3;
+      const wave=Math.sin(t*Math.PI*2-Math.PI/2);
+      const arch=wave*24;
+      const col=arch<-10?"#4d9ef5":arch>10?"#f0a030":"#f0f0f2";
+      const gy=220,sx=100,hipX=200,hipY=gy-72,sY=gy-72+arch*.3,midY=gy-72+arch;
+      c.innerHTML=`<svg viewBox="0 0 300 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:280px">
+        <line x1="30" y1="${gy}" x2="270" y2="${gy}" stroke="rgba(255,255,255,.07)" stroke-width="1"/>
+        <circle cx="${sx-5}" cy="${gy}" r="7" fill="#555"/>
+        <circle cx="${sx+15}" cy="${gy}" r="7" fill="#555"/>
+        <circle cx="${hipX-10}" cy="${gy}" r="7" fill="#555"/>
+        <circle cx="${hipX+10}" cy="${gy}" r="7" fill="#555"/>
+        <line x1="${sx+5}" y1="${gy}" x2="${sx+5}" y2="${sY}" stroke="#f0f0f2" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="${hipX}" y1="${gy}" x2="${hipX}" y2="${hipY}" stroke="#f0f0f2" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M ${sx+5} ${sY} Q 150 ${midY} ${hipX} ${hipY}" fill="none" stroke="${col}" stroke-width="3.5" stroke-linecap="round"/>
+        <circle cx="${sx-15}" cy="${sY-18}" r="17" fill="none" stroke="#f0f0f2" stroke-width="2"/>
+        ${Math.abs(arch)>14?`<text x="138" y="${midY-14}" font-size="15" font-weight="700" font-family="system-ui" fill="${col}">${arch<0?"CAT":"COW"}</text>`:""}
+        <rect x="8" y="8" width="${this.phases[ph].length*7+16}" height="20" rx="4" fill="rgba(15,186,130,.18)"/>
+        <text x="16" y="21" font-size="11" font-weight="600" font-family="system-ui" fill="#0fba82">${this.phases[ph]}</text>
+        <rect x="8" y="284" width="284" height="22" rx="5" fill="rgba(15,186,130,.1)" stroke="rgba(15,186,130,.3)" stroke-width=".5"/>
+        <text x="16" y="298" font-size="11" font-family="system-ui" fill="#5DCAA5">${this.cues[ph]}</text>
+      </svg>`;
+    }
+  },
+  "neck-resist":{
+    phases:["Frontal","Latéral droit","Postérieur","Latéral gauche"],
+    cues:["Isométrique — NE PAS bouger","Tenir 5s par répétition","Force progressive — pas maximale","Indispensable pour encaisser les chocs"],
+    render(c,t){
+      const ph=Math.floor(t*4)%4;
+      const active=(t*4)%1>.1&&(t*4)%1<.85;
+      const cx=150,sy=210,hy=sy-98;
+      const hp=ph===0?{x:cx,y:hy-22}:ph===1?{x:cx-38,y:hy+2}:ph===2?{x:cx,y:hy+20}:{x:cx+38,y:hy+2};
+      c.innerHTML=`<svg viewBox="0 0 300 310" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-height:280px">
+        <rect x="${cx-34}" y="${sy}" width="68" height="68" rx="8" fill="none" stroke="#f0f0f2" stroke-width="1.5"/>
+        <rect x="${cx-9}" y="${hy+24}" width="18" height="34" rx="5" fill="none" stroke="#f0f0f2" stroke-width="1.5"/>
+        <circle cx="${cx}" cy="${hy}" r="26" fill="none" stroke="#f0f0f2" stroke-width="2"/>
+        <circle cx="${hp.x}" cy="${hp.y}" r="17" fill="${active?"rgba(15,186,130,.26)":"rgba(255,255,255,.09)"}" stroke="${active?"#0fba82":"rgba(255,255,255,.22)"}" stroke-width="${active?2:1}"/>
+        <text x="${hp.x-9}" y="${hp.y+6}" font-size="15" font-family="system-ui">✋</text>
+        ${active?`<text x="${cx-70}" y="${hy-52}" font-size="11" font-weight="600" font-family="system-ui" fill="#0fba82">ISOMÉTRIQUE ✓</text>`:""}
+        <rect x="8" y="8" width="${this.phases[ph].length*7+16}" height="20" rx="4" fill="rgba(15,186,130,.18)"/>
+        <text x="16" y="21" font-size="11" font-weight="600" font-family="system-ui" fill="#0fba82">${this.phases[ph]}</text>
+        <rect x="8" y="284" width="284" height="22" rx="5" fill="rgba(15,186,130,.1)" stroke="rgba(15,186,130,.3)" stroke-width=".5"/>
+        <text x="16" y="298" font-size="11" font-family="system-ui" fill="#5DCAA5">${this.cues[ph]}</text>
+      </svg>`;
+    }
+  }
+};
+
+const PACtrl = {
+  active:{},
+  start(key,container){
+    this.stop(key);
+    const a=PA[key]; if(!a)return;
+    let t=0,last=null;
+    const tick=(ts)=>{
+      if(!last)last=ts;
+      t=((t*5000+(ts-last))%5000)/5000;
+      last=ts;
+      try{a.render(container,t);}catch(e){}
+      this.active[key]=requestAnimationFrame(tick);
+    };
+    this.active[key]=requestAnimationFrame(tick);
+  },
+  stop(key){if(this.active[key]){cancelAnimationFrame(this.active[key]);delete this.active[key];}},
+  stopAll(){Object.keys(this.active).forEach(k=>this.stop(k));}
+};
+
 // ===== GLOBALS =====
 let curPage='home', curSession=null, curDayIdx=0, sheetExId=null, sheetMediaMode='anim';
 let charts={};
@@ -1464,7 +1764,7 @@ function today(){return new Date().toDateString();}
 
 // ===== NAVIGATION =====
 function nav(page){
-  if(page!=='session'){AnimController?.stopAll();}
+  if(page!=='session'){AnimController?.stopAll();} if(page!=='posture'){PACtrl?.stopAll();}
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   const el=document.getElementById('page-'+page);
@@ -1472,7 +1772,7 @@ function nav(page){
   const ni=document.querySelector(`.nav-item[data-page="${page}"]`);
   if(ni)ni.classList.add('active');
   curPage=page;
-  const renders={home:renderHome,program:renderProgram,stats:renderStats,posture:renderPosture,nutrition:renderNutrition,profile:renderProfile};
+  const renders={home:renderHome,program:renderProgram,stats:renderStats,posture:renderPosture,nutrition:renderNutrition,profile:renderProfile,'home-workouts':renderHomeWorkouts};
   if(renders[page])renders[page]();
   window.scrollTo({top:0,behavior:'instant'});
 }
@@ -3096,36 +3396,207 @@ function openScanner(){
 }
 
 // ===== POSTURE PAGE =====
+let pmMode = {}; // animKey -> 'anim'|'video'
+
 function renderPosture(){
-  document.getElementById('page-posture').innerHTML=`
-  <div class="page-header"><div class="page-title">POSTURE</div><div class="page-sub">Routine quotidienne · 10–12 min</div></div>
-  <div class="px">
-  <div class="card card-accent fade-up">
-    <div style="font-size:12px;font-weight:600;color:var(--accent)">Syndrome croisé supérieur</div>
-    <div style="font-size:12px;color:rgba(29,158,117,.85);margin-top:4px;line-height:1.5">7 exercices qui corrigent la tête en avant et les épaules enroulées. À faire chaque matin.</div>
-  </div>
-  ${POSTURE_ROUTINE.map((ex,i)=>`
-  <div class="card fade-up" style="animation-delay:${i*.04}s">
+  PACtrl.stopAll();
+  const html2 = POSTURE_ROUTINE.map((ex,i)=>{
+    const hasAnim = !!PA[ex.anim];
+    const hasVideo = !!ex.video;
+    const mode = pmMode[ex.anim] || (hasAnim ? 'anim' : 'video');
+    return `<div class="card fade-up" style="animation-delay:${i*.04}s">
     <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
       <div><div style="font-size:14px;font-weight:500">${ex.name}</div>
-      <div style="font-size:11px;color:var(--accent);margin-top:2px">${ex.duration}</div></div>
+      <div style="font-size:11px;color:var(--accent);margin-top:2px">${ex.dur}</div></div>
       <span style="background:var(--surface2);color:var(--text3);padding:3px 8px;border-radius:99px;font-size:10px">${i+1}/${POSTURE_ROUTINE.length}</span>
     </div>
+    ${(hasAnim&&hasVideo)?`<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+      <button onclick="setPM('${ex.anim}','anim')" class="btn btn-sm ${mode==='anim'?'btn-primary':'btn-outline'}">Animation</button>
+      <button onclick="setPM('${ex.anim}','video')" class="btn btn-sm ${mode==='video'?'btn-primary':'btn-outline'}">Vidéo</button>
+    </div>`:''}
+    <div id="pm-${ex.anim}" style="border-radius:10px;overflow:hidden;background:var(--surface2);${(hasAnim||hasVideo)?'min-height:160px;':''}margin-bottom:${(hasAnim||hasVideo)?'10px':'0'}"></div>
     <div class="muscle-list">${ex.muscles.map(m=>`<span class="muscle-tag">${m}</span>`).join('')}</div>
-    <div class="feel-box" style="margin:7px 0">
-      <div class="feel-label">Où sentir</div>
-      <p style="font-size:12px">${ex.feel}</p>
-    </div>
+    <div class="feel-box" style="margin:7px 0"><div class="feel-label">Où sentir</div><p style="font-size:12px">${ex.feel}</p></div>
     <div style="font-size:12px;color:var(--text2);line-height:1.6">${ex.instruction}</div>
-  </div>`).join('')}
+  </div>`;
+  }).join('');
+
+  document.getElementById('page-posture').innerHTML=`
+  <div class="page-header"><div class="page-title">POSTURE</div><div class="page-sub">Routine quotidienne · 10–12 min · Chaque exercice a une animation et une vidéo</div></div>
+  <div class="px">
+  <div class="card card-accent fade-up" style="margin-bottom:10px">
+    <div style="font-size:12px;font-weight:600;color:var(--accent)">Syndrome croisé supérieur</div>
+    <div style="font-size:12px;color:rgba(15,186,130,.82);margin-top:4px;line-height:1.5">7 exercices qui corrigent la tête en avant et les épaules enroulées.</div>
+  </div>
+  ${html2}
   <div class="card fade-up">
     <div style="font-size:13px;font-weight:500;margin-bottom:6px">📱 La règle principale</div>
     <div style="font-size:12px;color:var(--text2);line-height:1.7">
-      Téléphone à hauteur des yeux.<br>
-      <b style="color:var(--text)">1h tête baissée = 27kg de pression sur la nuque.</b><br>
-      Sans ça, les exercices ne suffiront pas.
+      Téléphone à hauteur des yeux — jamais tête baissée.<br>
+      <b style="color:var(--text)">1h tête baissée = 27kg de pression sur la nuque.</b>
     </div>
   </div></div>`;
+
+  setTimeout(()=>{
+    POSTURE_ROUTINE.forEach(ex=>{
+      if(!ex.anim) return;
+      const mode = pmMode[ex.anim] || (PA[ex.anim] ? 'anim' : 'video');
+      const c = document.getElementById('pm-'+ex.anim);
+      if(!c) return;
+      if(mode==='anim' && PA[ex.anim]) {
+        PACtrl.start(ex.anim, c);
+      } else if(ex.video) {
+        c.innerHTML = videoThumb(ex.anim, ex.video);
+      }
+    });
+  }, 60);
+}
+
+function videoThumb(key, url){
+  return `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:24px;cursor:pointer;min-height:140px" onclick="loadPV('${key}','${url}')">
+    <div style="width:48px;height:48px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px var(--accent-glow)"><svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M8 5v14l11-7z"/></svg></div>
+    <div style="font-size:12px;color:var(--text2)">Voir la démonstration</div>
+  </div>`;
+}
+
+function setPM(key, mode){
+  pmMode[key] = mode;
+  PACtrl.stop(key);
+  const c = document.getElementById('pm-'+key);
+  if(!c) return;
+  const ex = POSTURE_ROUTINE.find(e=>e.anim===key);
+  if(mode==='anim' && PA[key]) { PACtrl.start(key, c); }
+  else if(ex?.video) { c.innerHTML = videoThumb(key, ex.video); }
+  const card = c.closest('.card');
+  if(card) card.querySelectorAll('button.btn-sm').forEach(b=>{
+    const isAnim = b.textContent.trim()==='Animation';
+    b.className = `btn btn-sm ${(isAnim&&mode==='anim')||(!isAnim&&mode==='video') ? 'btn-primary':'btn-outline'}`;
+  });
+}
+
+function loadPV(key, url){
+  PACtrl.stop(key);
+  const c = document.getElementById('pm-'+key);
+  if(c) c.innerHTML=`<div style="position:relative;padding-bottom:56.25%"><iframe style="position:absolute;inset:0;width:100%;height:100%;border:none" src="${url}?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe></div>`;
+}
+
+
+
+// ===== SÉANCES APPART =====
+function renderHomeWorkouts(){
+  const dayIdx = new Date().getDay()===0?6:new Date().getDay()-1;
+  const todayType = WEEKLY_PROGRAM[dayIdx].type;
+  const {block,weeksIn,weeksLeft} = Perio.getBlock();
+  const shouldChange = Perio.shouldChange();
+
+  document.getElementById('page-home-workouts').innerHTML=`
+  <div class="page-header"><div class="page-title">APPART</div><div class="page-sub">Bodyweight · Escalier · Sans équipement</div></div>
+  <div class="px">
+
+  <div class="card card-accent fade-up">
+    <div style="font-size:12px;font-weight:600;color:var(--accent)">Complémentaire à la salle</div>
+    <div style="font-size:12px;color:rgba(15,186,130,.82);margin-top:3px;line-height:1.5">Ces séances ne remplacent pas la salle — elles s'y ajoutent intelligemment aux bons moments.</div>
+  </div>
+
+  <!-- Periodization block -->
+  <div class="card ${shouldChange?'card-gold':'card-accent'} fade-up" style="animation-delay:.04s">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+      <div>
+        <div style="font-size:13px;font-weight:600;color:${block.color}">${block.name}</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:2px">${block.reps} reps · ${block.sets} séries · Repos ${block.rest}s</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-family:var(--font-display);font-size:24px;color:${block.color}">${weeksLeft}</div>
+        <div style="font-size:9px;color:var(--text3)">sem. restantes</div>
+      </div>
+    </div>
+    <div class="prog-bg" style="margin-bottom:8px">
+      <div class="prog-fill" style="width:${Math.round((weeksIn/block.weeks)*100)}%;background:${block.color}"></div>
+    </div>
+    <div style="font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:${shouldChange?'8px':'0'}">${block.desc}</div>
+    ${shouldChange?`<div style="background:rgba(240,160,48,.1);border:.5px solid rgba(240,160,48,.3);border-radius:8px;padding:8px 12px">
+      <div style="font-size:11px;font-weight:600;color:var(--gold)">Changement de bloc recommandé</div>
+      <div style="font-size:11px;color:var(--text2);margin-top:2px">Fin de bloc ou stagnation détectée. Passe au bloc suivant la semaine prochaine et varie tes exercices accessoires.</div>
+    </div>`:''}
+  </div>
+
+  <!-- Progression des blocs -->
+  <div style="display:flex;gap:4px;margin-bottom:12px">
+    ${PERIO_BLOCKS.map(b=>`<div style="flex:${b.weeks};height:5px;background:${b.id===block.id?b.color:'rgba(255,255,255,.1)'};border-radius:3px;transition:all .3s" title="${b.name}"></div>`).join('')}
+  </div>
+
+  <div class="section-label">Séances disponibles</div>
+  ${HOME_SESSIONS.map((sess,i)=>{
+    const recommended = (todayType==='rugby'&&sess.id==='activation') ||
+                       (dayIdx===6&&(sess.id==='escalier'||sess.id==='complement')) ||
+                       sess.id==='renfo-soir';
+    return`<div class="card card-interactive fade-up" style="animation-delay:${.04+i*.04}s" onclick="haptic();showHomeSess('${sess.id}')">
+      <div style="display:flex;gap:12px;align-items:flex-start">
+        <div style="width:46px;height:46px;border-radius:11px;background:${sess.color}22;border:.5px solid ${sess.color}44;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">${sess.emoji}</div>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:6px">
+            <div style="font-size:14px;font-weight:500">${sess.name}</div>
+            ${recommended?`<span style="font-size:9px;padding:2px 7px;background:${sess.color}22;color:${sess.color};border-radius:99px;font-weight:600">Aujourd'hui</span>`:''}
+          </div>
+          <div style="font-size:11px;color:var(--text2);margin-top:2px">${sess.dur} · ${sess.exos.length} exercices</div>
+          <div style="font-size:10px;color:var(--text3);margin-top:2px">${sess.timing}</div>
+        </div>
+        <span class="badge ${sess.intensity.includes('élevée')?'badge-orange':sess.intensity==='légère'?'badge-green':'badge-blue'}" style="flex-shrink:0">${sess.intensity}</span>
+      </div>
+    </div>`;
+  }).join('')}
+
+  </div>`;
+}
+
+function showHomeSess(id){
+  const sess = HOME_SESSIONS.find(s=>s.id===id);
+  if(!sess) return;
+  const content = document.getElementById('home-sess-content');
+  content.innerHTML=`
+    <div class="sheet-handle"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:30px">${sess.emoji}</span>
+        <div class="sheet-title" style="font-size:20px">${sess.name}</div>
+      </div>
+      <button class="btn btn-ghost" onclick="closeSheet('home-sess-sheet')" style="font-size:18px;flex-shrink:0">✕</button>
+    </div>
+    <div class="sheet-sub">${sess.dur} · ${sess.intensity} · ${sess.exos.length} exercices</div>
+
+    <div class="feel-box" style="margin-bottom:12px">
+      <div class="feel-label">Objectif</div>
+      <p>${sess.why}</p>
+    </div>
+
+    <div class="card" style="background:var(--surface2);margin-bottom:12px">
+      <div style="font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:8px">Timing</div>
+      <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px">
+        <span style="color:#0fba82;font-size:13px">✓</span>
+        <span style="font-size:12px;color:var(--accent)">${sess.timing}</span>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:8px">
+        <span style="color:var(--red);font-size:13px">✕</span>
+        <span style="font-size:12px;color:var(--text2)">${sess.avoid}</span>
+      </div>
+    </div>
+
+    <div class="section-label">Exercices</div>
+    ${sess.exos.map((ex,i)=>`<div class="card-sm" style="margin-bottom:7px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div style="flex:1">
+          <div style="font-size:13px;font-weight:500">${ex.n}</div>
+          <div style="font-size:11px;color:var(--text2);margin-top:1px">${ex.s} séries × ${ex.r} · repos ${ex.rest}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px;font-style:italic">${ex.note}</div>
+        </div>
+        <span style="font-size:10px;padding:3px 8px;border-radius:99px;background:var(--accent-dim);color:var(--accent);flex-shrink:0;margin-left:8px">${ex.m.split(',')[0]}</span>
+      </div>
+    </div>`).join('')}
+
+    <button class="btn btn-primary btn-full" style="margin-top:10px" onclick="haptic('success');closeSheet('home-sess-sheet');toast('${sess.name} — bonne séance !','success')">C'est parti !</button>
+    <button class="btn btn-outline btn-full btn-sm" style="margin-top:6px" onclick="closeSheet('home-sess-sheet')">Fermer</button>
+  `;
+  document.getElementById('home-sess-sheet').classList.add('open');
 }
 
 // ===== PROFILE PAGE =====
