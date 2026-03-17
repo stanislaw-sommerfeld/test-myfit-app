@@ -598,13 +598,20 @@ const WEEKLY_PROGRAM = [
 ];
 
 const POSTURE_ROUTINE = [
-  { name: "Chin tuck", duration: "3×10 (tenir 10s)", muscles: ["Fléchisseurs cervicaux profonds"], feel: "Sous le menton et à l'arrière du cou", instruction: "Allongé sur le dos, rentrer le menton vers la nuque sans lever la tête. Double menton visible." },
-  { name: "Wall angel", duration: "3×10", muscles: ["Rhomboïdes", "Trapèze moyen", "Épaules"], feel: "Entre les omoplates et arrière des bras", instruction: "Dos et nuque collés au mur, bras à 90°. Faire glisser les bras vers le haut en gardant tout en contact avec le mur." },
-  { name: "Rétraction scapulaire", duration: "3×15 (tenir 5s)", muscles: ["Rhomboïdes", "Trapèze moyen"], feel: "Entre les deux omoplates", instruction: "Debout, serrer les omoplates comme pour tenir un crayon entre elles. Épaules restent basses." },
-  { name: "Étirement SCM", duration: "3×30s/côté", muscles: ["Sterno-cléido-mastoïdien"], feel: "Sur le côté du cou", instruction: "Incliner la tête sur le côté et légèrement tourner vers le haut. Maintenir sans forcer." },
-  { name: "Étirement pectoraux", duration: "3×30s/côté", muscles: ["Pectoraux", "Épaule antérieure"], feel: "Avant de l'épaule et pectoral", instruction: "Bras à 90° appuyé sur un chambranle. Tourner doucement le corps vers l'autre côté." },
-  { name: "Cat-cow", duration: "2×10 lents", muscles: ["Thoracique", "Lombaires"], feel: "Toute la colonne", instruction: "À 4 pattes. Dos rond (cat) en expirant, dos creux (cow) en inspirant. Lentement." },
-  { name: "Résistance manuelle cou (3 directions)", duration: "3×10 chaque", muscles: ["Tous les fléchisseurs et extenseurs cervicaux"], feel: "Cou dans la direction opposée à la résistance", instruction: "Main sur le front (frontal), la tempe (latéral) ou derrière la tête (arrière). Résister avec le cou, tenir 5s." }
+  {name:"Chin tuck",dur:"3×10 (tenir 10s)",muscles:["Fléchisseurs cervicaux profonds"],feel:"Sous le menton et à l'arrière du cou",instruction:"Allongé sur le dos, rentrer le menton vers la nuque sans lever la tête. Double menton visible.",video:"https://www.youtube.com/embed/wQylqaCl8Zo",anim:"chin-tuck",cat:"posture"},
+  {name:"Wall angel",dur:"3×10",muscles:["Rhomboïdes","Trapèze moyen","Épaules"],feel:"Entre les omoplates et arrière des bras",instruction:"Dos et nuque collés au mur, bras à 90°. Faire glisser les bras vers le haut en gardant tout en contact avec le mur.",video:"https://www.youtube.com/embed/j_8OsB5kfMM",anim:"wall-angel",cat:"posture"},
+  {name:"Rétraction scapulaire",dur:"3×15 (tenir 5s)",muscles:["Rhomboïdes","Trapèze moyen"],feel:"Entre les deux omoplates",instruction:"Debout, serrer les omoplates comme pour tenir un crayon entre elles. Épaules restent basses.",video:"https://www.youtube.com/embed/FeRoB8-FYe0",anim:"scap-retract",cat:"posture"},
+  {name:"Étirement SCM",dur:"3×30s/côté",muscles:["Sterno-cléido-mastoïdien"],feel:"Sur le côté du cou",instruction:"Incliner la tête sur le côté et légèrement tourner vers le haut. Maintenir sans forcer.",video:"https://www.youtube.com/embed/VNH9mEXiLIQ",anim:"scm-stretch",cat:"posture"},
+  {name:"Étirement pectoraux",dur:"3×30s/côté",muscles:["Pectoraux","Épaule antérieure"],feel:"Avant de l'épaule et pectoral",instruction:"Bras à 90° appuyé sur un chambranle. Tourner doucement le corps vers l'autre côté.",video:"https://www.youtube.com/embed/Vy-ueVxMnOk",anim:"pec-stretch",cat:"posture"},
+  {name:"Cat-cow",dur:"2×10 lents",muscles:["Thoracique","Lombaires"],feel:"Toute la colonne",instruction:"À 4 pattes. Dos rond (cat) en expirant, dos creux (cow) en inspirant. Lentement.",video:"https://www.youtube.com/embed/kqnua4rHVVA",anim:"cat-cow",cat:"posture"},
+  {name:"Résistance manuelle cou",dur:"3×10 chaque direction",muscles:["Fléchisseurs cervicaux","Extenseurs","Fléchisseurs latéraux"],feel:"Cou dans la direction opposée à la résistance",instruction:"Main sur le front (frontal), la tempe (latéral) ou derrière la tête (arrière). Résister avec le cou, tenir 5s.",video:"https://www.youtube.com/embed/aemtAGXgGlY",anim:"neck-resist",cat:"posture"},
+  {name:"Étirement quadriceps debout",dur:"3×45s/jambe",muscles:["Quadriceps","Rectus femoris"],feel:"Face antérieure de la cuisse, jusque vers le genou",instruction:"Debout sur une jambe, attraper la cheville derrière. Genou pointant vers le sol, hanches droites. IMPORTANT pour Osgood-Schlatter.",video:"https://www.youtube.com/embed/kSPv8EF4XMM",anim:null,cat:"flex",osgood:true},
+  {name:"Étirement ischios assis",dur:"3×45s/jambe",muscles:["Ischio-jambiers","Mollets"],feel:"Arrière de la cuisse et du genou",instruction:"Assis au sol, jambe tendue. Pencher le tronc vers l'avant en gardant le dos plat. Ne pas arrondir le dos.",video:"https://www.youtube.com/embed/gMrAKB2-BVA",anim:null,cat:"flex"},
+  {name:"Pigeon modifié (hanche)",dur:"2×60s/côté",muscles:["Fessiers","Rotateurs externes","Hip flexors"],feel:"Fessier profond et hanche externe",instruction:"Au sol, jambe avant croisée devant toi, jambe arrière allongée. Torse vers le bas progressivement. Évite si douleur genou.",video:"https://www.youtube.com/embed/5tMLgwzpAR8",anim:null,cat:"flex"},
+  {name:"Étirement mollets (Soleus + Gastro)",dur:"2×45s/jambe",muscles:["Mollets","Achille"],feel:"Mollet profond et derrière la cheville",instruction:"Face au mur, pied en arrière genou légèrement fléchi (Soleus). Répéter jambe tendue (Gastro). Crucial pour genou/cheville.",video:"https://www.youtube.com/embed/OzjUJyB5jnk",anim:null,cat:"flex"},
+  {name:"VMO excentrique (Osgood-Schlatter)",dur:"3×10 descentes lentes",muscles:["VMO (vaste interne)","Quadriceps","Rotule"],feel:"Face interne du genou et quad interne — jamais de douleur osseuse",instruction:"Squat partiel à 60° max sur une jambe, descente en 4 secondes, remontée normale. STOP si douleur à la tubérosité. Renforce sans comprimer.",video:"https://www.youtube.com/embed/dQqApCGd5Ss",anim:null,cat:"osgood",osgood:true,warning:"Arrête immédiatement si douleur à la tubérosité tibiale (bosse sous le genou)"},
+  {name:"Isométrique rotule (VMO)",dur:"3×30s/jambe",muscles:["VMO","Quadriceps"],feel:"Quad interne, pas de douleur au genou",instruction:"Assis, jambe quasi-tendue (10° de flexion), contracter le quad le plus fort possible. Pas de compression de la rotule.",video:"https://www.youtube.com/embed/VCN8Jy2Knrw",anim:null,cat:"osgood",osgood:true},
+  {name:"Proprioception unipodal",dur:"3×30s/jambe",muscles:["Chevilles","Genou","Proprioception"],feel:"Toute la chaîne stabilisatrice du genou",instruction:"Debout sur une jambe, légèrement fléchie. Progresser : yeux ouverts → yeux fermés → plateau instable. Clé pour prévenir les croisés.",video:"https://www.youtube.com/embed/K2RjmHJpjjA",anim:null,cat:"osgood"}
 ];
 
 if (typeof module !== 'undefined') module.exports = { EXERCISES, WEEKLY_PROGRAM, POSTURE_ROUTINE };
@@ -729,6 +736,13 @@ const Storage = {
       exerciseNotes:{}, // { exId: [{date,text,sessionId}] }
       fatigue:5,
       globalMemos:[],
+      athleticBaseline:{
+        sprint10m:null,   // seconds e.g. 1.72
+        sprint20m:null,
+        squat1rm:null,    // kg
+        bench1rm:null,
+        flexibility:null  // cm sit-and-reach
+      },
       nutrition:{
         log:[],         // [{date, meals:[{name,emoji,items:[{name,kcal,p,c,f,qty,unit}]}]}]
         goals:{kcal:3100,protein:140,carbs:420,fat:70}
@@ -1721,13 +1735,14 @@ const PA = {
 
 const PACtrl = {
   active:{},
-  start(key,container){
+  start(key,container,speed=1){
     this.stop(key);
     const a=PA[key]; if(!a)return;
     let t=0,last=null;
+    const cycleMs=5000/Math.max(0.1,speed);
     const tick=(ts)=>{
       if(!last)last=ts;
-      t=((t*5000+(ts-last))%5000)/5000;
+      t=((t*cycleMs+(ts-last))%cycleMs)/cycleMs;
       last=ts;
       try{a.render(container,t);}catch(e){}
       this.active[key]=requestAnimationFrame(tick);
@@ -1737,6 +1752,9 @@ const PACtrl = {
   stop(key){if(this.active[key]){cancelAnimationFrame(this.active[key]);delete this.active[key];}},
   stopAll(){Object.keys(this.active).forEach(k=>this.stop(k));}
 };
+
+let postureTab='posture';
+let animSpeed=1;
 
 // ===== GLOBALS =====
 let curPage='home', curSession=null, curDayIdx=0, sheetExId=null, sheetMediaMode='anim';
@@ -2942,57 +2960,86 @@ function drawMuscleCharts(){
 // ===== ATHLETIC TAB =====
 function buildAthleticTab(athletic){
   const projection=projectAthleticIndices(8);
+  const s=Storage.get();
+  const bl=s.athleticBaseline||{};
+
+  // Convert index to real units using baseline + progression
+  function toRealUnit(key,val,proj8){
+    const delta=(proj8-val)/100;
+    switch(key){
+      case 'speed': {
+        if(bl.sprint10m){ const imp=bl.sprint10m*(1-delta*0.12); return{now:bl.sprint10m.toFixed(2)+'s',fut:imp.toFixed(2)+'s (10m)',unit:'s',better:'moins'}; }
+        if(s.sprintLogs?.length){ const best=Math.min(...s.sprintLogs.filter(l=>l.dist===10).map(l=>l.time)); const imp=best*(1-delta*0.12); return{now:best.toFixed(2)+'s',fut:imp.toFixed(2)+'s (10m)',unit:'s',better:'moins'}; }
+        return null;
+      }
+      case 'explosive': {
+        if(bl.squat1rm){ const imp=bl.squat1rm*(1+delta*0.15); return{now:bl.squat1rm+'kg',fut:Math.round(imp)+'kg squat',unit:'kg',better:'plus'}; }
+        return null;
+      }
+      case 'contact': {
+        if(bl.bench1rm){ const imp=bl.bench1rm*(1+delta*0.12); return{now:bl.bench1rm+'kg',fut:Math.round(imp)+'kg bench',unit:'kg',better:'plus'}; }
+        return null;
+      }
+      default: return null;
+    }
+  }
+
   const qualityInfo={
-    speed:{label:'Vitesse',icon:'⚡',desc:'Basé sur: squat sauté, box jump, deadlift. Corrèle avec la vitesse maximale de sprint (études Wisloff et al. 2004).'},
-    acceleration:{label:'Accélération 0-10m',icon:'🚀',desc:'Basé sur: squat barre, bulgarian squat, hip thrust. Force produite au démarrage. Corrèle avec le 10m départ arrêté.'},
-    explosive:{label:'Force explosive',icon:'💥',desc:'Basé sur: push press, jump squat, deadlift. Puissance totale générée — clé pour les plaquages et les soutiens.'},
-    endurance:{label:'Endurance musculaire',icon:'🔋',desc:'Basé sur: volume cumulé, farmer carry, core. Capacité à maintenir l\'intensité sur la durée du match.'},
-    injury_resistance:{label:'Résistance aux blessures',icon:'🛡',desc:'Basé sur: nordic curl (ischios), face pull (épaules), core. Corrèle avec réduction du risque de blessures musculaires.'},
-    contact:{label:'Impact au contact',icon:'🏉',desc:'Basé sur: bench press, rowing, overhead press, core. Force transmissible en collision — plaquage, soutien, ruck.'}
+    speed:{label:'Vitesse',icon:'⚡',color:'#0fba82',desc:"Corrèle avec la vitesse de sprint max. Basé sur: squat sauté, box jump, deadlift (Wisloff et al. 2004)."},
+    acceleration:{label:'Accélération 0-10m',icon:'🚀',color:'#4d9ef5',desc:"Force produite au démarrage. Basé sur: squat barre, bulgarian squat, hip thrust. Corrèle avec le 10m départ arrêté."},
+    explosive:{label:'Force explosive',icon:'💥',color:'#f0a030',desc:"Puissance totale — clé plaquages et soutiens. Basé sur: push press, jump squat, deadlift."},
+    endurance:{label:'Endurance musculaire',icon:'🔋',color:'#9d8df5',desc:"Capacité à maintenir l'intensité sur la durée du match. Basé sur: volume cumulé, farmer carry, core."},
+    injury_resistance:{label:'Résistance aux blessures',icon:'🛡',color:'#f05050',desc:"Réduit le risque de blessures musculaires. Basé sur: nordic curl (ischios), face pull (épaules), core."},
+    contact:{label:'Impact au contact',icon:'🏉',color:'#38d9c0',desc:"Force transmissible en collision — plaquage, soutien, ruck. Basé sur: bench, rowing, OHP, core."}
   };
+
+  const hasNoBaseline=Object.values(bl).every(v=>v===null);
 
   return`
   <div class="card fade-up card-accent">
     <div style="font-size:11px;color:var(--accent);font-weight:600;margin-bottom:4px">Comment c'est calculé ?</div>
-    <div style="font-size:11px;color:rgba(29,158,117,.85);line-height:1.5">Ces indices sont calculés depuis tes performances réelles en salle, pondérées par les corrélations documentées dans la littérature en sciences du sport (biomécanique, physiologie de l'effort). Ils augmentent quand ta force et ton volume progressent.</div>
+    <div style="font-size:11px;color:rgba(15,186,130,.82);line-height:1.5">Indices calculés depuis tes performances en salle, pondérés par les corrélations publiées en sciences du sport. Ils montent quand tes charges progressent.</div>
+    ${hasNoBaseline?`<button class="btn btn-outline btn-sm btn-full" style="margin-top:8px" onclick="showAthleticBaselineSheet()">+ Ajouter mes valeurs de départ pour des prédictions en secondes/kg</button>`:'<button class="btn btn-ghost btn-sm" style="margin-top:4px;color:var(--text3)" onclick="showAthleticBaselineSheet()">Modifier les valeurs de référence</button>'}
   </div>
 
-  <!-- Radar chart -->
-  <div class="card fade-up" style="animation-delay:.04s">
+  <div class="card fade-up" style="animation-delay:.03s">
     <div style="font-size:12px;font-weight:500;margin-bottom:8px">Profil athlétique actuel</div>
     <div class="chart-wrap" style="height:220px"><canvas id="chart-radar"></canvas></div>
   </div>
 
-  <!-- Projection -->
-  <div class="card fade-up" style="animation-delay:.07s">
-    <div style="font-size:12px;font-weight:500;margin-bottom:8px">Projection sur 8 semaines</div>
-    <div class="chart-wrap" style="height:160px"><canvas id="chart-athletic-proj"></canvas></div>
-    <div style="font-size:10px;color:var(--text3);margin-top:6px">Projection basée sur une progression constante de tes charges. Plus tu t'entraînes, plus les indices montent.</div>
+  <div class="card fade-up" style="animation-delay:.06s">
+    <div style="font-size:12px;font-weight:500;margin-bottom:8px">Projection 8 semaines</div>
+    <div class="chart-wrap" style="height:155px"><canvas id="chart-athletic-proj"></canvas></div>
+    <div style="font-size:10px;color:var(--text3);margin-top:5px">Basé sur une progression constante. Les vraies unités s'affichent si tu as entré tes valeurs de référence.</div>
   </div>
 
-  <!-- Individual quality cards -->
   <div class="section-label">Détail par qualité</div>
   ${Object.entries(qualityInfo).map(([key,info])=>{
     const val=athletic[key]||0;
     const proj8=projection[8]?.[key]||val;
-    const delta=proj8-val;
-    const barColor=key==='speed'?'#1D9E75':key==='acceleration'?'#378ADD':key==='explosive'?'#e8a020':key==='endurance'?'#7F77DD':key==='injury_resistance'?'#e05252':'#5DCAA5';
+    const delta=Math.round(proj8-val);
+    const real=toRealUnit(key,val,proj8);
     return`<div class="card fade-up" style="margin-bottom:8px">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
         <div style="display:flex;align-items:center;gap:8px">
           <span style="font-size:20px">${info.icon}</span>
           <div>
             <div style="font-size:13px;font-weight:500">${info.label}</div>
-            <div style="font-size:10px;color:var(--text3);margin-top:1px">Dans 8 sem: <span style="color:${barColor}">${Math.round(proj8)}</span> (+${Math.round(delta)})</div>
+            <div style="font-size:10px;color:var(--text3);margin-top:1px">
+              ${real?`Dans 8 sem: <span style="color:${info.color}">${real.fut}</span>`:
+                     `Dans 8 sem: <span style="color:${info.color}">${Math.round(proj8)}</span> (+${delta})`}
+            </div>
           </div>
         </div>
         <div style="text-align:right">
-          <div style="font-family:var(--font-display);font-size:28px;color:${barColor}">${val}</div>
-          <div style="font-size:10px;color:var(--text3)">/100</div>
+          ${real?`<div style="font-size:15px;font-weight:600;color:${info.color}">${real.now}</div>
+                  <div style="font-size:9px;color:var(--text3)">${val}/100</div>`:
+                 `<div style="font-family:var(--font-display);font-size:28px;color:${info.color}">${val}</div>
+                  <div style="font-size:10px;color:var(--text3)">/100</div>`}
         </div>
       </div>
-      <div class="prog-bg" style="height:7px;margin-bottom:6px">
-        <div style="height:100%;width:${val}%;background:${barColor};border-radius:3px;transition:width .6s ease"></div>
+      <div class="prog-bg" style="height:6px;margin-bottom:6px">
+        <div style="height:100%;width:${val}%;background:${info.color};border-radius:3px;transition:width .6s ease"></div>
       </div>
       <div style="font-size:11px;color:var(--text2);line-height:1.5">${info.desc}</div>
     </div>`;
@@ -3206,20 +3253,50 @@ function renderMeals(){
       </div>
       <button class="btn btn-xs btn-outline" onclick="showAddFoodSheet(${mi})">+ Aliment</button>
     </div>
-    ${meal.items.length?meal.items.map((item,ii)=>`
-    <div class="food-log-item">
-      <div class="food-icon">${item.emoji||'🍽️'}</div>
-      <div style="flex:1">
-        <div class="food-name">${item.name}</div>
-        <div class="food-sub" style="color:var(--text2)">${item.portionLabel||((item.qty||100)+'g')} · <b style="color:var(--text)">${Math.round((item.kcal||0)*(item.qty||100)/100)} kcal</b></div>
-        <div class="food-sub">Prot: ${Math.round((item.p||0)*(item.qty||100)/100)}g · Gluc: ${Math.round((item.c||0)*(item.qty||100)/100)}g · Lip: ${Math.round((item.f||0)*(item.qty||100)/100)}g</div>
-      </div>
-      <div style="text-align:right">
-        <div class="food-kcal">${Math.round((item.kcal||0)*(item.qty||100)/100)}<span style="font-size:9px;font-weight:400;color:var(--text3)"> kcal</span></div>
-      </div>
-      <button class="btn btn-ghost btn-xs" onclick="removeFoodItem(${mi},${ii})" style="color:var(--red);margin-left:4px">✕</button>
-    </div>`).join(''):`<div style="font-size:12px;color:var(--text3);padding:6px 0">Aucun aliment · Appuie sur + pour ajouter</div>`}
+    ${meal.items.length?meal.items.map((item,ii)=>{
+      const baseQty=item.baseQty||item.qty||100;
+      const mult=Math.round((item.qty||100)/baseQty*10)/10;
+      const multDisplay=mult===Math.round(mult)?mult+'×':mult+'×';
+      const kcal=Math.round((item.kcal||0)*(item.qty||100)/100);
+      const p=Math.round((item.p||0)*(item.qty||100)/100);
+      const c2=Math.round((item.c||0)*(item.qty||100)/100);
+      const f=Math.round((item.f||0)*(item.qty||100)/100);
+      return`<div class="food-log-item">
+        <div class="food-icon" style="font-size:20px">${item.emoji||'🍽️'}</div>
+        <div style="flex:1;min-width:0">
+          <div class="food-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${item.name}</div>
+          <div class="food-sub" style="color:var(--text2)">${item.portionLabel||((item.qty||100)+'g')} · <b style="color:var(--text)">${kcal} kcal</b></div>
+          <div class="food-sub">P:${p}g · G:${c2}g · L:${f}g</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:3px;margin-left:6px;flex-shrink:0">
+          <button class="btn btn-xs btn-outline" style="width:26px;height:26px;padding:0;font-size:14px" onclick="changeFoodQty(${mi},${ii},1)">+</button>
+          <div style="font-size:11px;font-weight:600;color:var(--accent);min-width:22px;text-align:center">${multDisplay}</div>
+          <button class="btn btn-xs btn-outline" style="width:26px;height:26px;padding:0;font-size:14px" onclick="changeFoodQty(${mi},${ii},-1)" ${mult<=0.5?'disabled':''}>−</button>
+        </div>
+        <button class="btn btn-ghost btn-xs" onclick="removeFoodItem(${mi},${ii})" style="color:var(--red);margin-left:2px;flex-shrink:0">✕</button>
+      </div>`;
+    }).join(''):`<div style="font-size:12px;color:var(--text3);padding:6px 0">Aucun aliment · Appuie sur + pour ajouter</div>`}
   </div>`).join('');
+}
+
+function changeFoodQty(mi,ii,delta){
+  const item=nutritionState.meals[mi].items[ii];
+  if(!item)return;
+  const baseQty=item.baseQty||(item.qty||100);
+  if(!item.baseQty)item.baseQty=baseQty;
+  const step=baseQty; // increment by 1 portion
+  const newQty=Math.max(step*0.5, item.qty + delta*step);
+  item.qty=Math.round(newQty*10)/10;
+  Storage.saveTodayNutrition(nutritionState);
+  renderMeals();
+  // Update macro totals
+  const totals=computeNutTotals(nutritionState.meals);
+  const goals=Storage.getNutritionGoals();
+  ['kcal','protein','carbs','fat'].forEach(k=>{
+    const pct=Math.min(100,Math.round((totals[k==='kcal'?'kcal':k==='protein'?'protein':k==='carbs'?'carbs':'fat']||0)/goals[k==='kcal'?'kcal':k==='protein'?'protein':k==='carbs'?'carbs':'fat']*100));
+    const fill=document.querySelector(`.prog-fill-${k==='kcal'?'':''}${k}`);
+    if(fill)fill.style.width=pct+'%';
+  });
 }
 
 let scannerMealIdx=0;
@@ -3393,6 +3470,222 @@ function openScanner(){
     };
     document.body.appendChild(inp);}
   inp.click();
+}
+
+
+// ===== ATHLETIC BASELINE SHEET =====
+function showAthleticBaselineSheet(){
+  const s=Storage.get();
+  const bl=s.athleticBaseline||{};
+  const content=document.getElementById('ex-sheet-content');
+  content.innerHTML=`
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Valeurs de référence</div>
+    <div class="sheet-sub">Entre tes valeurs actuelles pour des prédictions en vraies unités (secondes, kg...)</div>
+
+    <div class="card card-accent" style="margin-bottom:12px">
+      <div style="font-size:11px;color:var(--accent);line-height:1.5">Ces valeurs servent uniquement à calibrer les prédictions. Laisse vide ce que tu ne connais pas — les indices /100 continuent à fonctionner.</div>
+    </div>
+
+    <div class="input-label" style="margin-bottom:4px">Sprint 10m (secondes)</div>
+    <input class="input input-sm" type="number" step="0.01" id="bl-s10" value="${bl.sprint10m||''}" placeholder="Ex: 1.72" style="margin-bottom:10px">
+
+    <div class="input-label" style="margin-bottom:4px">Sprint 20m (secondes)</div>
+    <input class="input input-sm" type="number" step="0.01" id="bl-s20" value="${bl.sprint20m||''}" placeholder="Ex: 2.95" style="margin-bottom:10px">
+
+    <div class="input-label" style="margin-bottom:4px">Squat 1RM estimé (kg)</div>
+    <input class="input input-sm" type="number" step="1" id="bl-sq" value="${bl.squat1rm||''}" placeholder="Ex: 80" style="margin-bottom:10px">
+
+    <div class="input-label" style="margin-bottom:4px">Développé couché 1RM estimé (kg)</div>
+    <input class="input input-sm" type="number" step="1" id="bl-bp" value="${bl.bench1rm||''}" placeholder="Ex: 60" style="margin-bottom:10px">
+
+    <div class="input-label" style="margin-bottom:4px">Souplesse — Sit and reach (cm)</div>
+    <input class="input input-sm" type="number" step="1" id="bl-fl" value="${bl.flexibility||''}" placeholder="Ex: 5 (distance doigts/orteils)" style="margin-bottom:4px">
+    <div style="font-size:10px;color:var(--text3);margin-bottom:12px">Assis au sol jambes tendues, distance entre doigts et orteils en cm (+ = dépasse les pieds)</div>
+
+    <button class="btn btn-primary btn-full" onclick="saveAthleticBaseline()">Enregistrer</button>
+    <button class="btn btn-ghost btn-full btn-sm" style="margin-top:6px" onclick="closeSheet('ex-sheet')">Annuler</button>
+  `;
+  document.getElementById('ex-sheet').classList.add('open');
+}
+
+function saveAthleticBaseline(){
+  const s=Storage.get();
+  const g=v=>{ const el=document.getElementById(v); return el&&el.value?parseFloat(el.value):null; };
+  s.athleticBaseline={
+    sprint10m:g('bl-s10'), sprint20m:g('bl-s20'),
+    squat1rm:g('bl-sq'), bench1rm:g('bl-bp'), flexibility:g('bl-fl')
+  };
+  Storage.save(s);
+  closeSheet('ex-sheet');
+  toast('Valeurs de référence enregistrées ✓','success');
+  statsTab='athletic'; renderStats();
+}
+
+// ===== POSTURE PAGE =====
+
+function renderPosture(){
+  PACtrl.stopAll();
+  const cats={posture:{label:"Posture",icon:"🧍",desc:"Corrige le syndrome croisé supérieur"},flex:{label:"Souplesse",icon:"🤸",desc:"Maintenir l'amplitude malgré la prise de masse"},osgood:{label:"Genoux",icon:"🦵",desc:"Osgood-Schlatter + prévention croisés"}};
+  const exercises=POSTURE_ROUTINE.filter(ex=>ex.cat===postureTab);
+
+  const exHtml=exercises.map((ex,i)=>{
+    const hasAnim=!!(PA[ex.anim]);
+    const hasVideo=!!ex.video;
+    const mode=pmMode[ex.anim||ex.name]||(hasAnim?'anim':'video');
+    const mediaKey=ex.anim||ex.name.replace(/\s+/g,'-').toLowerCase();
+    return`<div class="card fade-up" style="animation-delay:${i*.04}s;${ex.osgood?'border-color:rgba(240,160,48,.3);':''}"}>
+    ${ex.warning?`<div style="background:var(--gold-dim);border:.5px solid rgba(240,160,48,.3);border-radius:8px;padding:7px 11px;margin-bottom:8px;font-size:11px;color:var(--gold)">⚠️ ${ex.warning}</div>`:''}
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+      <div><div style="font-size:14px;font-weight:500">${ex.name}</div>
+      <div style="font-size:11px;color:var(--accent);margin-top:2px">${ex.dur}</div></div>
+      <div style="display:flex;align-items:center;gap:6px">
+        ${ex.osgood?`<span style="font-size:9px;padding:2px 7px;border-radius:99px;background:var(--gold-dim);color:var(--gold);font-weight:600">Genoux</span>`:''}
+        <span style="background:var(--surface2);color:var(--text3);padding:3px 8px;border-radius:99px;font-size:10px">${i+1}/${exercises.length}</span>
+      </div>
+    </div>
+    ${(hasAnim&&hasVideo)?`<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px">
+      <button onclick="setPM('${mediaKey}','anim')" class="btn btn-sm ${mode==='anim'?'btn-primary':'btn-outline'}">Animation</button>
+      <button onclick="setPM('${mediaKey}','video')" class="btn btn-sm ${mode==='video'?'btn-primary':'btn-outline'}">Vidéo</button>
+    </div>
+    ${mode==='anim'?`<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+      <span style="font-size:10px;color:var(--text3)">Vitesse</span>
+      <input type="range" min="1" max="10" value="${Math.round(1/animSpeed*3)}" style="flex:1;height:3px" oninput="setAnimSpeed(1/this.value*3,'${mediaKey}')">
+      <span style="font-size:10px;color:var(--text3)">Ralenti</span>
+    </div>`:''}`:''}
+    ${hasVideo&&!hasAnim?`<div id="pm-${mediaKey}" style="border-radius:10px;overflow:hidden;background:var(--surface2);min-height:150px;margin-bottom:10px"></div>`:''}
+    ${hasAnim?`<div id="pm-${mediaKey}" style="border-radius:10px;overflow:hidden;background:var(--surface2);min-height:160px;margin-bottom:10px"></div>`:''}
+    ${!hasAnim&&hasVideo?`<div id="pm-${mediaKey}" style="border-radius:10px;overflow:hidden;background:var(--surface2);min-height:150px;margin-bottom:10px"></div>`:''}
+    <div class="muscle-list">${ex.muscles.map(m=>`<span class="muscle-tag">${m}</span>`).join('')}</div>
+    <div class="feel-box" style="margin:7px 0"><div class="feel-label">Où sentir</div><p style="font-size:12px">${ex.feel}</p></div>
+    <div style="font-size:12px;color:var(--text2);line-height:1.6">${ex.instruction}</div>
+  </div>`;
+  }).join('');
+
+  document.getElementById('page-posture').innerHTML=`
+  <div class="page-header"><div class="page-title">POSTURE</div><div class="page-sub">Corrections · Souplesse · Prévention blessures</div></div>
+
+  <!-- Tab bar -->
+  <div class="stats-tabs" style="margin-bottom:0">
+    ${Object.entries(cats).map(([k,v])=>`<button class="stats-tab-btn ${postureTab===k?'active':''}" onclick="postureTab='${k}';renderPosture()">${v.icon} ${v.label}</button>`).join('')}
+  </div>
+
+  <div class="px" style="padding-top:10px">
+  <div class="card card-accent fade-up" style="margin-bottom:10px">
+    <div style="font-size:12px;font-weight:600;color:var(--accent)">${cats[postureTab].desc}</div>
+    <div style="font-size:11px;color:rgba(15,186,130,.82);margin-top:3px;line-height:1.5">${
+      postureTab==='posture'?'7 exercices quotidiens (10-12 min). Corrige la tête en avant et les épaules enroulées.':
+      postureTab==='flex'?'Maintenir et améliorer ta souplesse pendant la prise de masse. Muscles longs = moins de blessures.':
+      'Séquelles Osgood-Schlatter + prévention ligaments croisés. Exercices kiné validés à faire seul.'
+    }</div>
+    ${postureTab==='osgood'?`<div style="font-size:11px;color:var(--gold);margin-top:6px;padding:6px 10px;background:var(--gold-dim);border-radius:6px">💡 Rappel : l'Osgood-Schlatter est terminé, mais le tendon rotulien et la tubérosité tibiale restent plus sensibles à vie. Les exercices excentriques lents sont les plus efficaces pour renforcer sans irriter.</div>`:''}
+  </div>
+  ${exHtml}
+  ${postureTab==='posture'?`<div class="card fade-up">
+    <div style="font-size:13px;font-weight:500;margin-bottom:6px">📱 La règle principale</div>
+    <div style="font-size:12px;color:var(--text2);line-height:1.7">Téléphone à hauteur des yeux — jamais tête baissée.<br><b style="color:var(--text)">1h tête baissée = 27kg de pression sur la nuque.</b></div>
+  </div>`:''}
+  ${postureTab==='flex'?`<div class="card fade-up">
+    <div style="font-size:13px;font-weight:500;margin-bottom:6px">Souplesse & prise de masse</div>
+    <div style="font-size:12px;color:var(--text2);line-height:1.7">Les muscles qui raccourcissent lors de l'hypertrophie : pectoraux, ischio-jambiers, hip flexors, quadriceps. Étire les muscles immédiatement après la séance quand ils sont chauds — c'est 3× plus efficace qu'à froid.</div>
+  </div>`:''}
+  </div>`;
+
+  setTimeout(()=>{
+    exercises.forEach((ex,i)=>{
+      const mediaKey=ex.anim||ex.name.replace(/\s+/g,'-').toLowerCase();
+      const mode=pmMode[mediaKey]||(PA[ex.anim]?'anim':'video');
+      const c=document.getElementById('pm-'+mediaKey);
+      if(!c)return;
+      if(mode==='anim'&&PA[ex.anim]){ PACtrl.start(ex.anim,c,animSpeed); }
+      else if(ex.video){ c.innerHTML=videoThumb(mediaKey,ex.video); }
+    });
+  },60);
+}
+
+function setAnimSpeed(speed,key){
+  animSpeed=Math.max(0.2,Math.min(4,speed));
+  PACtrl.stop(key);
+  const c=document.getElementById('pm-'+key);
+  const ex=POSTURE_ROUTINE.find(e=>e.anim===key);
+  if(c&&ex&&PA[key])PACtrl.start(key,c,animSpeed);
+}
+
+function videoThumb(key,url){
+  return`<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:24px;cursor:pointer;min-height:140px" onclick="loadPV('${key}','${url}')">
+    <div style="width:48px;height:48px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 16px var(--accent-glow)"><svg viewBox="0 0 24 24" fill="white" width="20" height="20"><path d="M8 5v14l11-7z"/></svg></div>
+    <div style="font-size:12px;color:var(--text2)">Voir la démonstration</div>
+  </div>`;
+}
+
+function setPM(key,mode){
+  pmMode[key]=mode;
+  PACtrl.stop(key);
+  const c=document.getElementById('pm-'+key);
+  if(!c)return;
+  const ex=POSTURE_ROUTINE.find(e=>e.anim===key||e.name.replace(/\s+/g,'-').toLowerCase()===key);
+  if(mode==='anim'&&PA[key]){PACtrl.start(key,c,animSpeed);}
+  else if(ex?.video){c.innerHTML=videoThumb(key,ex.video);}
+  const card=c.closest('.card');
+  if(card)card.querySelectorAll('button.btn-sm').forEach(b=>{
+    const isAnim=b.textContent.trim()==='Animation';
+    b.className=`btn btn-sm ${(isAnim&&mode==='anim')||(!isAnim&&mode==='video')?'btn-primary':'btn-outline'}`;
+  });
+}
+
+function loadPV(key,url){
+  PACtrl.stop(key);
+  const c=document.getElementById('pm-'+key);
+  if(c)c.innerHTML=`<div style="position:relative;padding-bottom:56.25%"><iframe style="position:absolute;inset:0;width:100%;height:100%;border:none" src="${url}?autoplay=1&rel=0" allowfullscreen allow="autoplay"></iframe></div>`;
+}
+
+// ===== ATHLETIC BASELINE SHEET =====
+function showAthleticBaselineSheet(){
+  const s=Storage.get();
+  const bl=s.athleticBaseline||{};
+  const content=document.getElementById('ex-sheet-content');
+  content.innerHTML=`
+    <div class="sheet-handle"></div>
+    <div class="sheet-title">Valeurs de référence</div>
+    <div class="sheet-sub">Entre tes valeurs actuelles pour des prédictions en vraies unités (secondes, kg...)</div>
+
+    <div class="card card-accent" style="margin-bottom:12px">
+      <div style="font-size:11px;color:var(--accent);line-height:1.5">Ces valeurs servent uniquement à calibrer les prédictions. Laisse vide ce que tu ne connais pas — les indices /100 continuent à fonctionner.</div>
+    </div>
+
+    <div class="input-label" style="margin-bottom:4px">Sprint 10m (secondes)</div>
+    <input class="input input-sm" type="number" step="0.01" id="bl-s10" value="${bl.sprint10m||''}" placeholder="Ex: 1.72" style="margin-bottom:10px">
+
+    <div class="input-label" style="margin-bottom:4px">Sprint 20m (secondes)</div>
+    <input class="input input-sm" type="number" step="0.01" id="bl-s20" value="${bl.sprint20m||''}" placeholder="Ex: 2.95" style="margin-bottom:10px">
+
+    <div class="input-label" style="margin-bottom:4px">Squat 1RM estimé (kg)</div>
+    <input class="input input-sm" type="number" step="1" id="bl-sq" value="${bl.squat1rm||''}" placeholder="Ex: 80" style="margin-bottom:10px">
+
+    <div class="input-label" style="margin-bottom:4px">Développé couché 1RM estimé (kg)</div>
+    <input class="input input-sm" type="number" step="1" id="bl-bp" value="${bl.bench1rm||''}" placeholder="Ex: 60" style="margin-bottom:10px">
+
+    <div class="input-label" style="margin-bottom:4px">Souplesse — Sit and reach (cm)</div>
+    <input class="input input-sm" type="number" step="1" id="bl-fl" value="${bl.flexibility||''}" placeholder="Ex: 5 (distance doigts/orteils)" style="margin-bottom:4px">
+    <div style="font-size:10px;color:var(--text3);margin-bottom:12px">Assis au sol jambes tendues, distance entre doigts et orteils en cm (+ = dépasse les pieds)</div>
+
+    <button class="btn btn-primary btn-full" onclick="saveAthleticBaseline()">Enregistrer</button>
+    <button class="btn btn-ghost btn-full btn-sm" style="margin-top:6px" onclick="closeSheet('ex-sheet')">Annuler</button>
+  `;
+  document.getElementById('ex-sheet').classList.add('open');
+}
+
+function saveAthleticBaseline(){
+  const s=Storage.get();
+  const g=v=>{ const el=document.getElementById(v); return el&&el.value?parseFloat(el.value):null; };
+  s.athleticBaseline={
+    sprint10m:g('bl-s10'), sprint20m:g('bl-s20'),
+    squat1rm:g('bl-sq'), bench1rm:g('bl-bp'), flexibility:g('bl-fl')
+  };
+  Storage.save(s);
+  closeSheet('ex-sheet');
+  toast('Valeurs de référence enregistrées ✓','success');
+  statsTab='athletic'; renderStats();
 }
 
 // ===== POSTURE PAGE =====
